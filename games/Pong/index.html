@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pong - Web Game</title>
+		<link rel="stylesheet" type="text/css" href="./src/styles/styles.css">
+			<script src="./src/script/script.js"></script>
+			<script src="./src/script/libs/three_and_controls.min_copy.js"></script>
+	</head>
+	<body>
+		<script type="x-shader/x-fragment" id="fragmentShaderDepth">
+
+		#include <packing>
+
+		uniform sampler2D texture;
+		varying vec2 vUV;
+
+		void main() {
+
+			vec4 pixel = texture2D( texture, vUV );
+
+			if ( pixel.a < 0.5 ){
+				discard;
+			}
+
+			gl_FragData[ 0 ] = packDepthToRGBA( gl_FragCoord.z );
+
+		}
+		</script>
+
+		<script type="x-shader/x-vertex" id="vertexShaderDepth">
+
+			varying vec2 vUV;
+
+			void main() {
+
+				vUV = uv;
+
+				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+				gl_Position = projectionMatrix * mvPosition;
+
+			}
+
+		</script>
+
+
+	</body>
+</html>
